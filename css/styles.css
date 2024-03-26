@@ -28,13 +28,12 @@ body, html {
   height: 100%;
   margin: 0;
   padding: 0;
-  /* overflow: hidden; */
+  overflow: hidden;
 
 }
 canvas {
   position:absolute;
   top:0;
-  /* z-index: -1; */
   left:0
 }
 
@@ -48,8 +47,8 @@ textarea {
 }
 
 .mainContent{
-  z-index: 99999 !important;
-  position: relative;
+  position: relative !important;
+  z-index: 99;
 }
 
 a {
@@ -59,6 +58,10 @@ a {
 img.img {
   width: 100%;
   object-fit: cover;
+}
+
+.navbar{
+  z-index: 99999999 !important;
 }
 
 .navbar-brand {
@@ -235,6 +238,10 @@ img.img {
   }
 }
 
+.colorPrimary{
+  color: #05b3a4 !important;
+}
+
 
 
 .bg-1 {
@@ -302,7 +309,7 @@ h1{
 
 .boxy {
   padding: 2.5rem;
-  background: rgba(255, 255, 255, .15);
+  background: rgba(255, 255, 255, .08);
   box-shadow: 0 4px 8px 0 rgb(0 0 0 / 4%), 0 6px 20px 0 rgb(0 0 0 / 1%);
   border-radius: 4px !important;
 }

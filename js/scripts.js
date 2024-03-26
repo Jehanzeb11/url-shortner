@@ -48,7 +48,6 @@ const send_data = async (data) => {
 const arm_url_form = () => {
   const url_form = document.getElementById('url_form');
 
-  if (url_form) {
     url_form.addEventListener('submit', function(event) {
       event.preventDefault(); // Prevent default form submission
 
@@ -72,7 +71,6 @@ const arm_url_form = () => {
           url_input.disabled = false;
         });
     });
-  }
 }
 
 // Call arm_url_form to ensure it's executed when the page loads
