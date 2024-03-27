@@ -276,12 +276,14 @@ img.img {
   background-size: cover;
 }
 
-h1{
-  font-size: 3rem !important;
+.title {
+  font-size: 4.5rem !important;
   color: #ffff !important;
 }
 
-
+.short_link{
+  width: 80% !important;
+}
 
 .menu {
   z-index: 9999;
@@ -308,8 +310,8 @@ h1{
 }
 
 .boxy {
-  padding: 2.5rem;
-  background: rgba(255, 255, 255, .08);
+  padding: 0 2.5rem;
+  /* background: rgba(255, 255, 255, .05); */
   box-shadow: 0 4px 8px 0 rgb(0 0 0 / 4%), 0 6px 20px 0 rgb(0 0 0 / 1%);
   border-radius: 4px !important;
 }
@@ -480,7 +482,7 @@ background: #05b3a4 !important;
 
   .boxy {
     padding: 1.5rem;
-    background: rgba(255, 255, 255, 0.2) !important;
+    /* background: rgba(255, 255, 255, 0.2) !important; */
   }
 
   .section.is-small {
@@ -522,7 +524,7 @@ background: #05b3a4 !important;
 }
 
 .footer {
-  margin-top: 3rem;
+  margin-top: 3rem !important;
   padding-top: 6em;
   padding-bottom: 6em;
 }
@@ -655,4 +657,44 @@ form textarea {
   overflow: hidden;
   max-height: calc(var(--lh) * var(--max-lines));
   --max-lines: 4;
+}
+
+
+a.bgPrimary.has-text-white {
+  width: 300px;
+  margin-left: auto;
+  margin-right: auto;
+}
+
+ul {
+  justify-content: center !important;
+}
+
+
+.hero-body {
+  justify-content: center;
+}
+
+.column.is-8 {
+  width: 100%;
+}
+
+.column{
+padding: 0 !important;
+}
+
+@media(max-width: 768px) {
+  .title {
+    font-size: 2.5rem !important;
+  }
+}
+
+#result > a{
+color: #05b3a4 !important;
+font-weight: 600 !important;
+}
+
+#result_container > div {
+  display: flex !important;
+  justify-content: center !important;
 }
