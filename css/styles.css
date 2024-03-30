@@ -242,7 +242,25 @@ img.img {
   color: #05b3a4 !important;
 }
 
+.titleAbout{
+  font-size: 3.5rem !important;
+}
 
+.textAbout{
+  color: #ccc !important;
+}
+
+.aboutContent{
+  color: #f1f1f1 !important;
+  font-weight: 600 !important;
+  font-size: 2rem;
+}
+
+.qrcodeImg{
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
 
 .bg-1 {
   background: url(../img/slide-01.webp) no-repeat center center fixed;
@@ -661,7 +679,7 @@ form textarea {
 
 
 a.bgPrimary.has-text-white {
-  width: 300px;
+  width: 280px;
   margin-left: auto;
   margin-right: auto;
 }
@@ -689,6 +707,13 @@ padding: 0 !important;
   }
 }
 
+
+@media(max-width: 425px) {
+  .title {
+    font-size: 2rem !important;
+  }
+}
+
 #result > a{
 color: #05b3a4 !important;
 font-weight: 600 !important;
@@ -697,4 +722,20 @@ font-weight: 600 !important;
 #result_container > div {
   display: flex !important;
   justify-content: center !important;
+}
+
+#result_container{
+  margin-top: 22px;
+}
+
+@media(max-width: 768px) {
+  #result_container{
+    margin-top: 0px;
+  }    
+}
+
+@media(max-width: 768px) {
+  .titleAbout{
+    font-size: 2.5rem !important;
+  }    
 }

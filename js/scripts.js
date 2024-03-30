@@ -1,17 +1,25 @@
-const swup = new Swup({
-  animateHistoryBrowsing: false,
-});
+// const swup = new Swup({
+//   animateHistoryBrowsing: false,
+// });
 
 const navbar = document.querySelectorAll('.navbar')[0];
 const navs = navbar.querySelectorAll('a');
 const burger = document.querySelectorAll('.navbar-burger')[0];
 const menu = document.querySelectorAll('.navbar-menu')[0];
+const qrCode = document.getElementById('qrCode')
 
 
+const destroyQRCode = () => {
+  qrCode.src = ''; // Clear the src attribute to destroy the QR code
+};
+
+// Function to recreate QR code
+const recreateQRCode = (url) => {
+  qrCode.src = `https://api.qrserver.com/v1/create-qr-code/?size=150x150&data=${url}`;
+};
 
 
-
-burger.onclick = (e) => {
+burger.onclick = (e) => {W
   burger.classList.toggle('is-active');
   menu.classList.toggle('is-active');
 };
@@ -31,17 +39,22 @@ const send_data = async (data) => {
   const result_container = document.getElementById('result_container');
     const Url = document.getElementById("url").value;
     const response = await fetch(`https://tinyurl.com/api-create.php?url=${encodeURIComponent(Url)}`);
+    
+    
     if (response.ok) {
-        const data = await response.text();
-  
-  console.log(data)
-  result_container.classList.remove('is-hidden');
-        document.getElementById('result').innerHTML = `
-        shortend URL : <a href="${data }" target="_blank" class="has-text-white has-text-weight-light"> ${data}</a>`;
+      const data = await response.text();
+      console.log(data)
+      result_container.classList.remove('is-hidden');
+      document.getElementById('result').innerHTML = `shortend URL : <a href="${data }" target="_blank" class="has-text-white has-text-weight-light"> ${data}</a>`;
+if (data) { 
+  recreateQRCode(Url);
+}
+
     }
     else{
         document.getElementById('result').innerHTML = "Error shortening"
     }
+
 }
 
 
@@ -76,9 +89,8 @@ const arm_url_form = () => {
 // Call arm_url_form to ensure it's executed when the page loads
 document.addEventListener("DOMContentLoaded", function(e) {
   arm_url_form();
+  destroyQRCode();
 });
-
-
 
 const arm_main_tabs = () => {
   const main_tabs = document.querySelectorAll('.tabs.main a');
@@ -108,14 +120,14 @@ const arm_main_tabs = () => {
 }
 
 
-swup.on('contentReplaced', () => {
-  arm_url_form();
-  arm_main_tabs();
-});
+// swup.on('contentReplaced', () => {
+//   arm_url_form();
+//   arm_main_tabs();
+// });
 
-document.addEventListener('swup:animationOutStart', (e) => {
-  //window.scrollTo(0, 0);
-});
+// document.addEventListener('swup:animationOutStart', (e) => {
+//   //window.scrollTo(0, 0);
+// });
 
 document.addEventListener("DOMContentLoaded", function(e) {
   console.log('DOM LOADED');
@@ -142,63 +154,64 @@ var background = document.getElementById("bgCanvas"),
 background.width = width;
 background.height = height;
 
-function Terrain(options) {
-  options = options || {};
-  this.terrain = document.createElement("canvas");
-  this.terCtx = this.terrain.getContext("2d");
-  this.scrollDelay = options.scrollDelay || 90;
-  this.lastScroll = new Date().getTime();
+class Terrain {
+  constructor(options) {
+    options = options || {};
+    this.terrain = document.createElement("canvas");
+    this.terCtx = this.terrain.getContext("2d");
+    this.scrollDelay = options.scrollDelay || 90;
+    this.lastScroll = new Date().getTime();
 
-  this.terrain.width = width;
-  this.terrain.height = height;
-  this.fillStyle = options.fillStyle || "#191D4C";
-  this.mHeight = options.mHeight || height;
+    this.terrain.width = width;
+    this.terrain.height = height;
+    this.fillStyle = options.fillStyle || "#191D4C";
+    this.mHeight = options.mHeight || height;
 
-  // generate
-  this.points = [];
+    // generate
+    this.points = [];
 
-  var displacement = options.displacement || 140,
-      power = Math.pow(2, Math.ceil(Math.log(width) / (Math.log(2))));
+    var displacement = options.displacement || 140, power = Math.pow(2, Math.ceil(Math.log(width) / (Math.log(2))));
 
-  // set the start height and end height for the terrain
-  this.points[0] = this.mHeight;//(this.mHeight - (Math.random() * this.mHeight / 2)) - displacement;
-  this.points[power] = this.points[0];
+    // set the start height and end height for the terrain
+    this.points[0] = this.mHeight; //(this.mHeight - (Math.random() * this.mHeight / 2)) - displacement;
+    this.points[power] = this.points[0];
 
-  // create the rest of the points
-  for (var i = 1; i < power; i *= 2) {
+    // create the rest of the points
+    for (var i = 1; i < power; i *= 2) {
       for (var j = (power / i) / 2; j < power; j += power / i) {
-          this.points[j] = ((this.points[j - (power / i) / 2] + this.points[j + (power / i) / 2]) / 2) + Math.floor(Math.random() * -displacement + displacement);
+        this.points[j] = ((this.points[j - (power / i) / 2] + this.points[j + (power / i) / 2]) / 2) + Math.floor(Math.random() * -displacement + displacement);
       }
       displacement *= 0.6;
+    }
+
+    document.body.appendChild(this.terrain);
   }
+  update() {
+    // draw the terrain
+    this.terCtx.clearRect(0, 0, width, height);
+    this.terCtx.fillStyle = this.fillStyle;
 
-  document.body.appendChild(this.terrain);
-}
-
-Terrain.prototype.update = function () {
-  // draw the terrain
-  this.terCtx.clearRect(0, 0, width, height);
-  this.terCtx.fillStyle = this.fillStyle;
-  
-  if (new Date().getTime() > this.lastScroll + this.scrollDelay) {
+    if (new Date().getTime() > this.lastScroll + this.scrollDelay) {
       this.lastScroll = new Date().getTime();
       this.points.push(this.points.shift());
-  }
+    }
 
-  this.terCtx.beginPath();
-  for (var i = 0; i <= width; i++) {
+    this.terCtx.beginPath();
+    for (var i = 0; i <= width; i++) {
       if (i === 0) {
-          this.terCtx.moveTo(0, this.points[0]);
+        this.terCtx.moveTo(0, this.points[0]);
       } else if (this.points[i] !== undefined) {
-          this.terCtx.lineTo(i, this.points[i]);
+        this.terCtx.lineTo(i, this.points[i]);
       }
-  }
+    }
 
-  this.terCtx.lineTo(width, this.terrain.height);
-  this.terCtx.lineTo(0, this.terrain.height);
-  this.terCtx.lineTo(0, this.points[0]);
-  this.terCtx.fill();
+    this.terCtx.lineTo(width, this.terrain.height);
+    this.terCtx.lineTo(0, this.terrain.height);
+    this.terCtx.lineTo(0, this.points[0]);
+    this.terCtx.fill();
+  }
 }
+
 
 
 // Second canvas used for the stars
