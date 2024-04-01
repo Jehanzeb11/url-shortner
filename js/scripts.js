@@ -1,145 +1,140 @@
-// const swup = new Swup({
-//   animateHistoryBrowsing: false,
-// });
+const swup = new Swup({
+  animateHistoryBrowsing: false,
+});
 
-const navbar = document.querySelectorAll('.navbar')[0];
-const navs = navbar.querySelectorAll('a');
-const burger = document.querySelectorAll('.navbar-burger')[0];
-const menu = document.querySelectorAll('.navbar-menu')[0];
-const qrCode = document.getElementById('qrCode')
+const navbar = document.querySelectorAll(".navbar")[0];
+const navs = navbar.querySelectorAll("a");
+const burger = document.querySelectorAll(".navbar-burger")[0];
+const menu = document.querySelectorAll(".navbar-menu")[0];
 
-
-const destroyQRCode = () => {
-  qrCode.src = ''; // Clear the src attribute to destroy the QR code
-};
-
-// Function to recreate QR code
-const recreateQRCode = (url) => {
-  qrCode.src = `https://api.qrserver.com/v1/create-qr-code/?size=150x150&data=${url}`;
-};
-
-
-burger.onclick = (e) => {W
-  burger.classList.toggle('is-active');
-  menu.classList.toggle('is-active');
+burger.onclick = (e) => {
+  burger.classList.toggle("is-active");
+  menu.classList.toggle("is-active");
 };
 
 for (var i = 0; i < navs.length; i++) {
-  if (!navs[i].classList.contains('navbar-burger')) {
+  if (!navs[i].classList.contains("navbar-burger")) {
     navs[i].onclick = () => {
-      if (burger.classList.contains('is-active')) {
-        burger.classList.toggle('is-active');
-        menu.classList.toggle('is-active');
+      if (burger.classList.contains("is-active")) {
+        burger.classList.toggle("is-active");
+        menu.classList.toggle("is-active");
       }
-    }
+    };
   }
 }
 
 const send_data = async (data) => {
-  const result_container = document.getElementById('result_container');
-    const Url = document.getElementById("url").value;
-    const response = await fetch(`https://tinyurl.com/api-create.php?url=${encodeURIComponent(Url)}`);
-    
-    
-    if (response.ok) {
-      const data = await response.text();
-      console.log(data)
-      result_container.classList.remove('is-hidden');
-      document.getElementById('result').innerHTML = `shortend URL : <a href="${data }" target="_blank" class="has-text-white has-text-weight-light"> ${data}</a>`;
-if (data) { 
-  recreateQRCode(Url);
-}
+  const result_container = document.getElementById("result_container");
+  const qrCode = document.getElementById("qrCode");
 
-    }
-    else{
-        document.getElementById('result').innerHTML = "Error shortening"
-    }
+  const Url = document.getElementById("url").value;
+  const response = await fetch(
+    `https://tinyurl.com/api-create.php?url=${encodeURIComponent(Url)}`
+  );
 
-}
+  if (response.ok) {
+    const data = await response.text();
+    console.log(data);
+    result_container.classList.remove("is-hidden");
+    document.getElementById(
+      "result"
+    ).innerHTML = `shortend URL : <a href="${data}" target="_blank" class="has-text-white has-text-weight-light"> ${data}</a>`;
 
+    const qr = await fetch(
+      `https://api.qrserver.com/v1/create-qr-code/?size=150x150&data=${Url}`
+    );
+    const img = qr.url;
+
+    qrCode.src = img;
+  } else {
+    document.getElementById("result").innerHTML = "Error shortening";
+  }
+};
 
 const arm_url_form = () => {
-  const url_form = document.getElementById('url_form');
-
-    url_form.addEventListener('submit', function(event) {
+  const url_form = document.getElementById("url_form");
+  if (url_form) {
+    url_form.addEventListener("submit", function (event) {
       event.preventDefault(); // Prevent default form submission
 
       const url_input = url_form.querySelector('input[name="url"]');
-      url_form.submit.classList.add('is-loading');
+      url_form.submit.classList.add("is-loading");
       url_input.disabled = true;
       const data = new FormData();
-      data.append('url', url_input.value);
+      data.append("url", url_input.value);
 
       // Call send_data function to handle form submission asynchronously
       send_data(data)
         .then((res) => {
           console.log(res);
-          setTimeout(function() {
-            url_form.submit.classList.remove('is-loading');
+          setTimeout(function () {
+            url_form.submit.classList.remove("is-loading");
             url_input.disabled = false;
           }, 1000);
         })
-        .catch(error => {
-          console.error('Error:', error);
+        .catch((error) => {
+          console.error("Error:", error);
           url_input.disabled = false;
         });
     });
-}
-
-// Call arm_url_form to ensure it's executed when the page loads
-document.addEventListener("DOMContentLoaded", function(e) {
-  arm_url_form();
-  destroyQRCode();
-});
+  } else {
+    console.error("Form element not found");
+  }
+};
 
 const arm_main_tabs = () => {
-  const main_tabs = document.querySelectorAll('.tabs.main a');
-  const tab_containers = document.querySelectorAll('.tab_container');
+  const main_tabs = document.querySelectorAll(".tabs.main a");
+  const tab_containers = document.querySelectorAll(".tab_container");
 
   if (main_tabs) {
     for (var i = 0; i < main_tabs.length; i++) {
-      main_tabs[i].addEventListener('click', function(e) {
-
+      main_tabs[i].addEventListener("click", function (e) {
         for (var i = 0; i < main_tabs.length; i++) {
-          main_tabs[i].parentNode.classList.remove('is-active');
+          main_tabs[i].parentNode.classList.remove("is-active");
         }
 
         for (var i = 0; i < tab_containers.length; i++) {
-          tab_containers[i].classList.add('is-hidden');
+          tab_containers[i].classList.add("is-hidden");
         }
 
-        let target_div = document.getElementById(e.target.getAttribute('data-id'));
-        target_div.classList.add('animate__fadeIn');
-        target_div.classList.remove('is-hidden');
+        let target_div = document.getElementById(
+          e.target.getAttribute("data-id")
+        );
+        target_div.classList.add("animate__fadeIn");
+        target_div.classList.remove("is-hidden");
 
-        e.target.parentNode.classList.add('is-active');
-
-      })
+        e.target.parentNode.classList.add("is-active");
+      });
     }
   }
-}
+};
 
+swup.on("contentReplaced", () => {
+  arm_url_form();
+  arm_main_tabs();
+});
 
-// swup.on('contentReplaced', () => {
-//   arm_url_form();
-//   arm_main_tabs();
-// });
+document.addEventListener("swup:animationOutStart", (e) => {
+  //window.scrollTo(0, 0);
+  arm_url_form();
+});
 
-// document.addEventListener('swup:animationOutStart', (e) => {
-//   //window.scrollTo(0, 0);
-// });
-
-document.addEventListener("DOMContentLoaded", function(e) {
-  console.log('DOM LOADED');
+document.addEventListener("DOMContentLoaded", function (e) {
+  console.log("DOM LOADED");
   window.scrollTo(0, 0);
   arm_url_form();
   arm_main_tabs();
 });
 
 (function () {
-  var requestAnimationFrame = window.requestAnimationFrame || window.mozRequestAnimationFrame || window.webkitRequestAnimationFrame || window.msRequestAnimationFrame || function (callback) {
-          window.setTimeout(callback, 1000 / 60);
-      };
+  var requestAnimationFrame =
+    window.requestAnimationFrame ||
+    window.mozRequestAnimationFrame ||
+    window.webkitRequestAnimationFrame ||
+    window.msRequestAnimationFrame ||
+    function (callback) {
+      window.setTimeout(callback, 1000 / 60);
+    };
   window.requestAnimationFrame = requestAnimationFrame;
 })();
 
@@ -149,7 +144,7 @@ var background = document.getElementById("bgCanvas"),
   width = window.innerWidth,
   height = document.body.offsetHeight;
 
-(height < 400) ? height = 400 : height;
+height < 400 ? (height = 400) : height;
 
 background.width = width;
 background.height = height;
@@ -170,7 +165,8 @@ class Terrain {
     // generate
     this.points = [];
 
-    var displacement = options.displacement || 140, power = Math.pow(2, Math.ceil(Math.log(width) / (Math.log(2))));
+    var displacement = options.displacement || 140,
+      power = Math.pow(2, Math.ceil(Math.log(width) / Math.log(2)));
 
     // set the start height and end height for the terrain
     this.points[0] = this.mHeight; //(this.mHeight - (Math.random() * this.mHeight / 2)) - displacement;
@@ -178,8 +174,11 @@ class Terrain {
 
     // create the rest of the points
     for (var i = 1; i < power; i *= 2) {
-      for (var j = (power / i) / 2; j < power; j += power / i) {
-        this.points[j] = ((this.points[j - (power / i) / 2] + this.points[j + (power / i) / 2]) / 2) + Math.floor(Math.random() * -displacement + displacement);
+      for (var j = power / i / 2; j < power; j += power / i) {
+        this.points[j] =
+          (this.points[j - power / i / 2] + this.points[j + power / i / 2]) /
+            2 +
+          Math.floor(Math.random() * -displacement + displacement);
       }
       displacement *= 0.6;
     }
@@ -212,35 +211,33 @@ class Terrain {
   }
 }
 
-
-
 // Second canvas used for the stars
-bgCtx.fillStyle = '#05004c';
+bgCtx.fillStyle = "#05004c";
 bgCtx.fillRect(0, 0, width, height);
 
 // stars
 function Star(options) {
   this.size = Math.random() * 2;
-  this.speed = Math.random() * .05;
+  this.speed = Math.random() * 0.05;
   this.x = options.x;
   this.y = options.y;
 }
 
 Star.prototype.reset = function () {
   this.size = Math.random() * 2;
-  this.speed = Math.random() * .05;
+  this.speed = Math.random() * 0.05;
   this.x = width;
   this.y = Math.random() * height;
-}
+};
 
 Star.prototype.update = function () {
   this.x -= this.speed;
   if (this.x < 0) {
-      this.reset();
+    this.reset();
   } else {
-      bgCtx.fillRect(this.x, this.y, this.size, this.size);
+    bgCtx.fillRect(this.x, this.y, this.size, this.size);
   }
-}
+};
 
 function ShootingStar() {
   this.reset();
@@ -249,62 +246,78 @@ function ShootingStar() {
 ShootingStar.prototype.reset = function () {
   this.x = Math.random() * width;
   this.y = 0;
-  this.len = (Math.random() * 80) + 10;
-  this.speed = (Math.random() * 10) + 6;
-  this.size = (Math.random() * 1) + 0.1;
+  this.len = Math.random() * 80 + 10;
+  this.speed = Math.random() * 10 + 6;
+  this.size = Math.random() * 1 + 0.1;
   // this is used so the shooting stars arent constant
-  this.waitTime = new Date().getTime() + (Math.random() * 3000) + 500;
+  this.waitTime = new Date().getTime() + Math.random() * 3000 + 500;
   this.active = false;
-}
+};
 
 ShootingStar.prototype.update = function () {
   if (this.active) {
-      this.x -= this.speed;
-      this.y += this.speed;
-      if (this.x < 0 || this.y >= height) {
-          this.reset();
-      } else {
-          bgCtx.lineWidth = this.size;
-          bgCtx.beginPath();
-          bgCtx.moveTo(this.x, this.y);
-          bgCtx.lineTo(this.x + this.len, this.y - this.len);
-          bgCtx.stroke();
-      }
+    this.x -= this.speed;
+    this.y += this.speed;
+    if (this.x < 0 || this.y >= height) {
+      this.reset();
+    } else {
+      bgCtx.lineWidth = this.size;
+      bgCtx.beginPath();
+      bgCtx.moveTo(this.x, this.y);
+      bgCtx.lineTo(this.x + this.len, this.y - this.len);
+      bgCtx.stroke();
+    }
   } else {
-      if (this.waitTime < new Date().getTime()) {
-          this.active = true;
-      }
+    if (this.waitTime < new Date().getTime()) {
+      this.active = true;
+    }
   }
-}
+};
 
 var entities = [];
 
 // init the stars
 for (var i = 0; i < height; i++) {
-  entities.push(new Star({
+  entities.push(
+    new Star({
       x: Math.random() * width,
-      y: Math.random() * height
-  }));
+      y: Math.random() * height,
+    })
+  );
 }
 
 // Add 2 shooting stars that just cycle.
 entities.push(new ShootingStar());
 entities.push(new ShootingStar());
-entities.push(new Terrain({mHeight : (height/2)-120}));
-entities.push(new Terrain({displacement : 120, scrollDelay : 50, fillStyle : "rgb(17,20,40)", mHeight : (height/2)-60}));
-entities.push(new Terrain({displacement : 100, scrollDelay : 20, fillStyle : "rgb(10,10,5)", mHeight : height/2}));
+entities.push(new Terrain({ mHeight: height / 2 - 120 }));
+entities.push(
+  new Terrain({
+    displacement: 120,
+    scrollDelay: 50,
+    fillStyle: "rgb(17,20,40)",
+    mHeight: height / 2 - 60,
+  })
+);
+entities.push(
+  new Terrain({
+    displacement: 100,
+    scrollDelay: 20,
+    fillStyle: "rgb(10,10,5)",
+    mHeight: height / 2,
+  })
+);
 
 //animate background
 function animate() {
-  bgCtx.fillStyle = '#110E19';
+  bgCtx.fillStyle = "#110E19";
   bgCtx.fillRect(0, 0, width, height);
-  bgCtx.fillStyle = '#ffffff';
-  bgCtx.strokeStyle = '#ffffff';
+  bgCtx.fillStyle = "#ffffff";
+  bgCtx.strokeStyle = "#ffffff";
 
   var entLen = entities.length;
 
   while (entLen--) {
-      entities[entLen].update();
+    entities[entLen].update();
   }
   requestAnimationFrame(animate);
 }
