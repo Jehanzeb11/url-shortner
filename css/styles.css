@@ -330,7 +330,7 @@ img.img {
 }
 
 .boxy {
-  padding: 0 2.5rem;
+  /* padding: 0 2.5rem; */
   /* background: rgba(255, 255, 255, .05); */
   box-shadow: 0 4px 8px 0 rgb(0 0 0 / 4%), 0 6px 20px 0 rgb(0 0 0 / 1%);
   border-radius: 4px !important;
@@ -563,9 +563,9 @@ input.is-bordered {
 }
 
 @media only screen and (max-width : 1015px) {
-  .boxy {
+  /* .boxy {
     padding: 1.5rem;
-  }
+  } */
 
   .section.is-small {
     margin-top: 0rem;
@@ -743,7 +743,7 @@ ul {
   position: relative;
   overflow: hidden;
   margin-top: 22px;
-  height: 215px !important;
+  height: 220px !important;
 }
 
 @media(max-width: 768px) {
@@ -892,6 +892,8 @@ ul {
 }
 
 .bgResult {
-  background: rgba(22, 22, 22, 0.5) !important;
-  border-radius: 5px;
+  background: #000000;  /* fallback for old browsers */
+  background: -webkit-linear-gradient(to right, #29292981, #111111af);  /* Chrome 10-25, Safari 5.1-6 */
+  background: linear-gradient(to right, #29292981, #111111af); /* W3C, IE 10+/ Edge, Firefox 16+, Chrome 26+, Opera 12+, Safari 7+ */
+  border-radius: 10px;
 }
