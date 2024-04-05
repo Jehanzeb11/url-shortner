@@ -932,6 +932,7 @@ ul {
 
 
 .wrapperResult {
+height: 230px;
   min-width: min(40rem, 100%);
 }
 
