@@ -330,7 +330,7 @@ img.img {
 }
 
 .boxy {
-  padding: 0 2.5rem;
+  /* padding: 0 2.5rem; */
   /* background: rgba(255, 255, 255, .05); */
   box-shadow: 0 4px 8px 0 rgb(0 0 0 / 4%), 0 6px 20px 0 rgb(0 0 0 / 1%);
   border-radius: 4px !important;
@@ -742,14 +742,14 @@ ul {
 #result_container {
   position: relative;
   overflow: hidden;
-  margin-top: 22px;
-  height: 220px !important;
+  /* margin-top: 22px; */
+  height: 100% !important;
 }
 
 @media(max-width: 768px) {
-  #result_container {
+  /* #result_container {
     margin-top: 0px;
-  }
+  } */
 }
 
 @media(max-width: 768px) {
@@ -799,7 +799,7 @@ ul {
 @media(max-width: 768px) {
 
   #result_container {
-    height: 225px !important;
+    height: 100% !important;
   }
 
 
@@ -846,7 +846,7 @@ ul {
 @media(max-width: 500px) {
 
   #result_container {
-    height: 250px !important;
+    height: 100% !important;
   }
 
 
@@ -937,7 +937,7 @@ height: 230px;
 }
 
 .boxResult {
-  margin: max(1rem, 3vw);
+  /* margin: max(1rem, 3vw); */
   border: 2px solid;
   border-image: conic-gradient(from var(--angle), var(--c2), var(--c1) 0.1turn, var(--c1) 0.15turn, var(--c2) 0.25turn) 30;
   animation: borderRotate var(--d) linear infinite forwards , zoomIn 1s ease-in-out;
@@ -986,4 +986,10 @@ height: 230px;
   to {
     transform: scale(1); /* End with full scale */
   }
+}
+
+@media(max-width: 768px) {
+.wrapperResult{
+  height: 250px;
+}
 }
