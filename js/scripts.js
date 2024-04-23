@@ -40,6 +40,11 @@ const send_data = async (data) => {
       "result"
     ).innerHTML = `shortend URL : <a href="${data}" target="_blank" class="has-text-white has-text-weight-light"> ${data}</a>`;
 
+    document.getElementById(
+      "result2"
+    ).innerHTML = `Long URL : <a href="${data}" target="_blank" class="has-text-white has-text-weight-light"> ${Url}</a> <br/>`;
+
+
     const qr = await fetch(
       `https://api.qrserver.com/v1/create-qr-code/?size=150x150&data=${Url}`
     );
@@ -322,3 +327,33 @@ function animate() {
   requestAnimationFrame(animate);
 }
 animate();
+
+
+
+// var lastScrollTop = 0;
+
+// window.addEventListener('scroll', function() {
+//   var st = window.pageYOffset || document.documentElement.scrollTop;
+//   if (st > lastScrollTop) {
+//     // Scrolling down
+//     var heroes = document.querySelectorAll('.myHeroes');
+//     heroes.forEach(function(hero) {
+//       if (isElementInViewport(hero)) {
+//         hero.classList.add('slide');
+//       } else {
+//         hero.classList.remove('slide');
+//       }
+//     });
+//   }
+//   lastScrollTop = st <= 0 ? 0 : st; // For Mobile or negative scrolling
+// });
+
+// function isElementInViewport(el) {
+//   var rect = el.getBoundingClientRect();
+//   return (
+//     rect.top >= 0 &&
+//     rect.left >= 0 &&
+//     rect.bottom <= (window.innerHeight || document.documentElement.clientHeight) &&
+//     rect.right <= (window.innerWidth || document.documentElement.clientWidth)
+//   );
+// }
